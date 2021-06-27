@@ -11,7 +11,8 @@ class HashTable:
         
     def hashFunction(self, key):
         return key%(self.sizeHashTable)
-        
+
+# calculate the avarage size of hashtable to resize it if it is more than loadfactor 
     def insert(self, data):
         avgSize_hashtable= sum(self.bucket_size)/self.sizeHashTable
         if avgSize_hashtable >= self.loadFactor:
@@ -21,22 +22,25 @@ class HashTable:
         index = self.hashFunction(data)
         self.Tables[index].insert(0,data)
         self.bucket_size[index] = self.bucket_size[index]+1
-    
+
+# resizing the array to the next index
     def assignSize(self):
         idx = self.sizing_array.index(self.sizeHashTable)
         return self.sizing_array[idx+1]
     
-        
+# storing the previous size of the hashtable to rehash the bucket     
     def resize(self):
         prev_size = self.sizeHashTable
         self.sizeHashTable = self.assignSize()
         self.rehashing(prev_size)
-        
+
+# rehashing the bucket
     def rehashing(self,prev_size):
         item_list=[]
         for i in range(prev_size):
             for j in range(len(self.bucket_size)):
                 item_list.append(self.Tables[i][j]) 
+                
 # reinitializing
         self.Tables = [[]*self.loadFactor] * self.sizeHashTable
         self.bucket_size = [0]*self.sizeHashTable
